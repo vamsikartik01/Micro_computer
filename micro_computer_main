@@ -1,0 +1,46 @@
+`timescale 1ns / 1ps
+
+
+module micro_computer(
+    input clk,clr,
+    output [15:0] out
+    );
+    wire CP,EP,LM,CE,LI,EI,LA,EA,SU,EU,LB,LO;
+    wire [16:0] bus,pout,marin,ramout,irin,irout,RAin,RAout,RBin,RBout,val,ROin;
+    wire [7:0] addr;
+    wire [3:0] ircu;
+    wire [11:0] signal;
+   
+    P_counter m1(clk,CP,clr,pout);
+    buffer b1(EP,pout,bus);
+    buffer b2(LM,bus,marin);
+    MAR m2(clk,clr,marin,addr); 
+    RAM m3(addr,ramout);
+    buffer b3(CE,ramout,bus);
+    buffer b4(LI,bus,irin);
+    IR m4(clk,clr,irin,ircu,irout);//LI,EI
+    control_unit C(~clk,clr,ircu,signal);
+    buffer b5(EI,irout,bus);
+    buffer b6(LA,bus,RAin);
+    REG_A m5(clk,clr,RAin,RAout);
+    buffer b7(EA,RAout,bus);
+    buffer b8(LB,bus,RBin);
+    REG_B m6(clk,clr,RBin,RBout);
+    A_S m7(SU,RAout,RBout,val);
+    buffer b9(EU,val,bus);
+    buffer b10(LO,bus,ROin);
+    REG_O m8(clk,clr,ROin,out);
+    //
+    assign LO = ~signal[0];
+    assign LB = ~signal[1];
+    assign EU = signal[2];
+    assign SU = signal[3];
+    assign EA = signal[4];
+    assign LA = ~signal[5];
+    assign EI = ~signal[6];
+    assign LI = ~signal[7];
+    assign CE = ~signal[8];
+    assign LM = ~signal[9];
+    assign EP = signal[10];
+    assign CP = signal[11];
+endmodule
