@@ -1,0 +1,17 @@
+`timescale 1ns / 1ps
+
+
+module REG_O(
+    input clk,
+    input clr,
+    input [15:0] bus,
+    output reg [15:0] out
+    );
+    always @ (posedge clk)
+    begin
+        if(clr==1)
+            out = 16'bZ;
+        else 
+            out = bus;
+    end
+endmodule
