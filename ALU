@@ -1,0 +1,17 @@
+`timescale 1ns / 1ps
+
+module A_S(
+    input SU,
+    input [15:0] dataA,dataB,
+    output reg [15:0] bus
+    );
+    always @ (dataA or dataB or SU)
+    begin
+        if(SU==0)
+            bus = dataA + dataB;
+        else if(SU==1)
+            bus = dataA - dataB;
+        else
+            bus = bus;
+    end
+endmodule
