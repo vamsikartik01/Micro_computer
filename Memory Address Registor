@@ -1,0 +1,16 @@
+`timescale 1ns / 1ps
+
+module MAR(
+    input clk,
+    input clr,
+    input [15:0] bus,
+    output reg [7:0] out
+    ); 
+    always @ (posedge clk)
+    begin
+        if(clr==1)
+            out <= 8'b00000000;
+        else
+            out <= bus[7:0];        
+    end
+endmodule
