@@ -1,0 +1,19 @@
+`timescale 1ns / 1ps
+
+module RAM(
+    input[7:0] addr,
+    output reg [15:0] bus
+    );
+    always @ (addr)
+    begin
+        case(addr)
+            8'b00000000 : bus = 16'b0000000000001101;//load
+            8'b00000001 : bus = 16'b0001000000001110;//add
+            8'b00000010 : bus = 16'b0010000000001111;//sub
+            8'b00000011 : bus = 16'b1110000000000110;//out
+            8'b00001101 : bus = 16'd11586;//+
+            8'b00001110 : bus = 16'd32659;//+
+            8'b00001111 : bus = 16'd10200;//-
+        endcase
+    end
+endmodule
