@@ -1,0 +1,94 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+
+module control_unit(
+    input clk,clr,
+    input [3:0] datain,
+    output [11:0] signal
+    );
+    reg [3:0] ROM1; 
+    reg [11:0] ROM2;
+    reg [11:0] datatemp;
+    reg [3:0] dtemp;
+    reg [2:0] count = 3'b000;
+    always @ (datain)
+    begin
+        case(datain)
+            4'b0000 : ROM1 = 4'b0011;
+            4'b0001 : ROM1 = 4'b0110;
+            4'b0010 : ROM1 = 4'b1001;
+            4'b1110 : ROM1 = 4'b1100;
+        endcase
+    end
+    always @ (dtemp)
+    begin
+        case(dtemp)
+            4'b0000 : ROM2 = 12'h5E3;
+            4'b0001 : ROM2 = 12'hBE3;
+            4'b0010 : ROM2 = 12'h263;
+            4'b0011 : ROM2 = 12'h1A3;
+            4'b0100 : ROM2 = 12'h2C3;
+            4'b0101 : ROM2 = 12'h3E3;
+            4'b0110 : ROM2 = 12'h1A3;
+            4'b0111 : ROM2 = 12'h2E1;
+            4'b1000 : ROM2 = 12'h3C7;
+            4'b1001 : ROM2 = 12'h1A3;
+            4'b1010 : ROM2 = 12'h2E1;
+            4'b1011 : ROM2 = 12'h3CF;
+            4'b1100 : ROM2 = 12'h3F2;
+            4'b1101 : ROM2 = 12'h3E3;
+            4'b1110 : ROM2 = 12'h3E3;
+            4'b1111 : ROM2 = 12'hFFF;
+        endcase
+    end
+    always @ (posedge clk)
+    begin
+        if(clr==1)
+            count = 3'b000;
+        else if (count == 3'b101)
+            count = 0;
+        else 
+            count = count + 3'b001;
+    end
+    always @ (count)
+    begin
+        case(count)
+            3'b000 : 
+                     begin
+                     dtemp = count;
+                     datatemp = ROM2;
+                     end
+            3'b001 : begin
+                     dtemp = count;
+                     datatemp = ROM2;
+                     end
+            3'b010 : begin
+                     dtemp = count;
+                     datatemp = ROM2;
+                     end
+            3'b011 : begin
+                        dtemp = ROM1;
+                        datatemp = ROM2;
+                     end 
+            3'b100 : begin
+                        dtemp = ROM1+4'b0001;
+                        datatemp = ROM2;
+                     end
+            3'b101 : begin
+                         dtemp = ROM1+4'b0010;
+                         datatemp = ROM2;
+                     end
+        endcase 
+        
+    end
+    assign signal = datatemp;
+endmodule
+
+
+
+
+
+
+
+
+
