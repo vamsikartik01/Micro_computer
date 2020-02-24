@@ -1,0 +1,18 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+
+module P_counter(
+    input clk,
+    input CP,clr,
+    output reg [15:0] bus
+    );
+    always @ (posedge clk)
+    begin
+        if (clr == 1) 
+            bus <= 16'h0;
+        else if(CP == 1)
+            bus <= bus + 16'h1;
+        else
+            bus <= bus;
+    end
+endmodule
