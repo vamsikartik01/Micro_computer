@@ -1,0 +1,22 @@
+`timescal
+
+
+module REG_B(
+    input clk,
+    input clr,
+    input [15:0] busin,
+    output reg [15:0] busout
+    );
+    always @ (posedge clk)
+    begin
+        if(clr==1)
+            busout = 16'bZ;
+        else 
+            begin
+            case(busin)
+                16'bZ : busout = busout;
+                default : busout = busin;
+            endcase
+            end
+    end
+endmodule
