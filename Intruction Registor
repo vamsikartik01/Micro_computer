@@ -1,0 +1,23 @@
+`timescale 1ns / 1ps
+
+module IR(
+    input clk,clr,
+    input [15:0] busin,
+    output reg [3:0] out,
+    output reg [15:0] busout
+    );
+    always @ (posedge clk)
+    begin
+        if(clr==1)
+        begin
+            out <= 4'b0000;
+            busout <= 16'h0;
+        end
+        else
+        begin
+            out <= busin[15:12];
+            busout[7:0] <= busin[7:0];
+            busout[15:8] <= 8'b00000000;
+        end
+    end
+endmodule
