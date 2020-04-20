@@ -1,0 +1,18 @@
+`timescale 1ns / 1ps
+
+module micro_computer_tb(
+
+    );
+    reg clk,clr;
+    wire [15:0] out;
+    
+ micro_computer DUT(.clk(clk),.clr(clr),.out(out));
+ initial begin
+ clk = 1;
+ forever #10 clk=~clk;
+ end
+ initial begin
+ clr = 1;#10;
+ clr = 0;
+ end
+endmodule
